@@ -1,114 +1,153 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SAE Word Swap Rollouts</title>
+<title>Editing the Goal</title>
 <style>
-:root{--bg:#fbfbfa;--card:#fff;--ink:#1c1f24;--muted:#5d6470;--rule:#d9dce1;--hl:#4b5d9a;--hlbg:#eef1fa;--bad:#a33}
-@media(prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1c1f25;--ink:#e8eaee;--muted:#98a0ad;--rule:#2f343d;--hl:#8ea2e6;--hlbg:#222a44;--bad:#e58a8a}}
+:root{--bg:#fbfbfa;--card:#fff;--ink:#1c1f24;--muted:#5d6470;--rule:#d9dce1;--hl:#4b5d9a;--hlbg:#eef1fa;--own:#b9a063;--bad:#b3433f}
+@media(prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1c1f25;--ink:#e8eaee;--muted:#98a0ad;--rule:#2f343d;--hl:#8ea2e6;--hlbg:#222a44;--own:#a68f55;--bad:#e58a8a}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:40px 16px 72px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:32px 16px 72px}
 main{max-width:1040px;margin:0 auto}
-h1{font-size:28px;line-height:1.2;margin:0 0 10px}
-.lede{color:var(--muted);max-width:780px;margin:0 0 20px}
-.method{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 20px;margin:0 0 8px}
+.status{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 11px;border-radius:99px;background:var(--hlbg);color:var(--hl);border:1px solid var(--hl)}
+h1{font-size:34px;line-height:1.15;margin:14px 0 6px;letter-spacing:-.01em}
+.by{margin:0 0 18px;color:var(--muted)}
+.lede{font-size:18px;max-width:800px;margin:0 0 22px}
+.method{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 22px}
 .method h2{margin:0 0 6px;font-size:16px}
 .method ul{margin:0;padding-left:20px}
-.method li{margin:4px 0}
-.scene{margin-top:36px;padding-top:8px;border-top:1px solid var(--rule)}
-h2{font-size:22px;margin:14px 0 2px}
-.prompt{margin:0 0 14px;color:var(--muted)}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.method li{margin:5px 0}
+.scene{margin-top:44px;padding-top:10px;border-top:1px solid var(--rule)}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-top:14px}
+h2{font-size:24px;margin:0}
+.setting{font-size:13px;font-weight:600;color:var(--hl);background:var(--hlbg);padding:2px 10px;border-radius:99px}
+.prompt{margin:4px 0 16px;color:var(--muted)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .hero{margin:0}
-.hero video{display:block;width:100%;aspect-ratio:1;background:#000;border-radius:8px;border:3px solid transparent}
-.hero.swap video{border-color:var(--hl)}
-.hero figcaption{margin-top:6px;font-size:14px}
-.tag{display:inline-block;margin-right:8px;padding:1px 9px;border-radius:99px;background:var(--rule);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.swap .tag{background:var(--hlbg);color:var(--hl)}
-.bar{display:flex;gap:12px;align-items:center;margin:14px 0}
+.hero video{display:block;width:100%;aspect-ratio:1;background:#000;border-radius:12px;border:3px solid var(--rule)}
+.hero.swap video{border-color:var(--hl);box-shadow:0 6px 24px -10px var(--hl)}
+.hero figcaption{margin-top:8px;font-size:15px}
+.tag{display:block;margin-bottom:2px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.swap .tag{color:var(--hl)}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:14px 0}
 button{font:inherit;font-weight:600;padding:8px 18px;border:1px solid var(--hl);background:var(--hl);color:#fff;border-radius:8px;cursor:pointer}
 button[data-all],button[data-stop]{background:var(--card);color:var(--ink);border-color:var(--rule);font-weight:500;padding:5px 12px}
 button:hover{filter:brightness(1.1)}
 .muted{color:var(--muted);font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 10px}
-.stats div{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:10px 14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 10px}
+.stats div{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 16px}
 .stats .hl{background:var(--hlbg);border-color:var(--hl)}
-.stats b{display:block;font-size:22px}
+.stats b{display:block;font-size:26px;line-height:1.2}
+.stats .hl b{color:var(--hl)}
 .stats span{font-size:13px;color:var(--muted)}
 .edit{font-size:14px;color:var(--muted);margin:8px 0 14px}
-details{border:1px solid var(--rule);border-radius:8px;background:var(--card);padding:0 16px}
-summary{cursor:pointer;padding:12px 0;font-weight:600}
-details[open] summary{border-bottom:1px solid var(--rule);margin-bottom:4px}
-h3{font-size:15px;margin:16px 0 8px}
+.edit b{color:var(--ink)}
+.striprow{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:12px}
+.strip{display:flex;gap:4px;flex-wrap:wrap}
+.chip{display:inline-block;width:16px;height:16px;border-radius:4px;border:1px solid transparent;vertical-align:-3px;margin-right:2px}
+.strip .chip{margin:0}
+a.chip:hover{transform:scale(1.25)}
+.chip.other{background:var(--hl)}
+.chip.own{background:var(--own)}
+.chip.none{background:transparent;border-color:var(--bad)}
+.legend{font-size:13px;color:var(--muted);margin:12px 0 0;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.legend .chip{margin-left:10px}
+details{border:1px solid var(--rule);border-radius:10px;background:var(--card);padding:0 18px}
+summary{cursor:pointer;padding:13px 0;font-weight:600}
+summary span{font-weight:400;color:var(--muted);margin-left:8px;font-size:14px}
+details[open] summary{border-bottom:1px solid var(--rule)}
+h3{font-size:15px;margin:18px 0 8px}
 h3 span{font-weight:400;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.t{margin:0}
-.t video{display:block;width:100%;aspect-ratio:1;background:#000;border-radius:5px;border:2px solid transparent}
-.t figcaption{font-size:12px;color:var(--muted);margin-top:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.t{margin:0;scroll-margin-top:20px}
+.t video{display:block;width:100%;aspect-ratio:1;background:#000;border-radius:8px;border:2px solid transparent;cursor:pointer}
+.t figcaption{font-size:12px;color:var(--muted);margin-top:4px}
 .t.other video{border-color:var(--hl)}
+.t.own video{border-color:var(--own)}
+.t.none video{border-color:var(--bad)}
 .t.other figcaption{color:var(--hl);font-weight:600}
 .t.none figcaption{color:var(--bad)}
-@media(max-width:640px){.stats{grid-template-columns:1fr}.pair{gap:8px}}
+.t:target video{outline:3px solid var(--ink);outline-offset:2px}
+.details-pad{height:12px}
+.coming{margin-top:56px;padding-top:12px;border-top:1px solid var(--rule)}
+.coming h2{margin-bottom:4px}
+.coming ul{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.coming li{border:1.5px dashed var(--rule);border-radius:12px;padding:14px 18px;background:var(--card)}
+.coming li b{display:block;margin-bottom:2px}
+.coming li span{font-size:14px;color:var(--muted)}
+footer{margin-top:48px;font-size:13px;color:var(--muted)}
+@media(max-width:640px){h1{font-size:26px}.stats{grid-template-columns:1fr}.pair{gap:8px}.hero figcaption{font-size:13px}}
 </style></head><body><main>
-<h1>Swapping a landmark word inside π<sub>0.5</sub> with sparse autoencoder features</h1>
-<p class="lede">The robot is told to pick up a black bowl and place it on the plate. We never change the instruction. Instead we edit
-the model’s internal representation of one landmark word, so “stove” looks like “wooden cabinet” (or the reverse),
-and check whether the robot goes for the other bowl.</p>
-<div class="method"><h2>What is being edited</h2><ul>
-<li><b>Model:</b> π<sub>0.5</sub> fine-tuned on LIBERO-Spatial; the edit is inside its PaliGemma language backbone.</li>
-<li><b>SAE:</b> a BatchTopK sparse autoencoder trained on the <b>layer-5</b> residual stream. Its features are the units we ablate or add.</li>
-<li><b>Where:</b> only at the token positions of the landmark word, after layer 5. Other tokens and the instruction text are untouched.</li>
-<li><b>Grading:</b> from logged object positions (bowl on the plate). Blue borders mark rollouts where the robot took the other bowl. Numbers like #7 are LIBERO initial-state ids and match across conditions.</li>
+<span class="status">Website being built</span>
+<h1>Editing the Goal: Per-Token SAE Steering and Its Depth Limits in π<sub>0.5</sub></h1>
+<p class="by">Anonymous Author(s)</p>
+<p class="lede">Replacing the SAE features of a single goal word with those of an alternative goal word, leaving the instruction text unchanged, steers π<sub>0.5</sub>-LIBERO into completing the alternative task.</p>
+<div class="method"><h2>Setup</h2><ul>
+<li><b>Scenes:</b> LIBERO-Spatial, where the policy must pick the correct one of two black bowls and place it on the plate. Scenes 7 (“on the stove”) and 9 (“on the wooden cabinet”) form a mirror pair.</li>
+<li><b>SAE swap:</b> encode the residual stream at A’s goal word, set latent codes, and add the change back through the decoder, leaving other latents and the reconstruction error unchanged. The edit is reapplied at every policy call.</li>
+<li><b>Layer L</b> is the output of PaliGemma block L. These rollouts use BatchTopK SAEs at layer 5.</li>
+<li><b>Success:</b> an edit counts as successful only if the robot completes prompt B’s task. Each swap is run with a control edit of random latents.</li>
 </ul></div>
 
 <section class="scene" id="scene7">
-  <h2>Scene 7</h2>
-  <p class="prompt">Instruction (never changed): “pick up the black bowl on the <b>stove</b> and place it on the plate”</p>
+  <div class="head"><h2>Scene 7</h2><span class="setting">Layer 5, word-selected</span></div>
+  <p class="prompt">LIBERO-Spatial, scene 7: “pick up the black bowl on the <b>stove</b> and place it on the plate”</p>
   <div class="pair" data-pair>
-    <figure class="hero"><video src="rollouts_scene7_9/videos/s7_unchanged_2.mp4" muted playsinline preload="auto"></video>
-      <figcaption><span class="tag">Unchanged</span>Follows its instruction: bowl on the stove</figcaption></figure>
-    <figure class="hero swap"><video src="rollouts_scene7_9/videos/s7_swap_2.mp4" muted playsinline preload="auto"></video>
-      <figcaption><span class="tag">SAE edit</span>bowl on the wooden cabinet instead</figcaption></figure>
+    <figure class="hero"><video src="rollouts_scene7_9/videos/s7_unchanged_2.mp4#t=0.1" muted loop playsinline preload="auto"></video>
+      <figcaption><span class="tag">π<sub>0.5</sub>-LIBERO unchanged</span>Picks up the bowl on the stove</figcaption></figure>
+    <figure class="hero swap"><video src="rollouts_scene7_9/videos/s7_swap_2.mp4#t=0.1" muted loop playsinline preload="auto"></video>
+      <figcaption><span class="tag">SAE swap</span>Picks up the bowl on the wooden cabinet instead</figcaption></figure>
   </div>
-  <div class="bar"><button class="play" data-play>▶ Play both</button><span class="muted">Same start state (#2) in both videos.</span></div>
+  <div class="bar"><button class="play" data-play>▶ Play both</button><span class="muted">Both runs see scene 7 and read the same instruction (#2).</span></div>
   <div class="stats">
-    <div><b>10/10</b><span>unchanged policy picks the stove bowl</span></div>
-    <div class="hl"><b>15/20</b><span>with the edit, picks the wooden cabinet bowl instead</span></div>
-    <div><b>control</b><span>16 random features: 2, 1, 0 of 20 (3 seeds)</span></div>
+    <div><b>10/10</b><span>rollouts: bowl on the stove</span></div>
+    <div class="hl"><b>15/20</b><span>rollouts: bowl on the wooden cabinet instead</span></div>
+    <div><b>control</b><span>16 random features: 2, 1, 0 of 20 (three random draws)</span></div>
   </div>
-  <p class="edit"><b>Edit:</b> Ablate 16 “stove” SAE features and add 16 “wooden cabinet” features (word-selected), applied at the landmark word after PaliGemma layer 5.</p>
-  <details>
-    <summary>Show all rollouts (10 unchanged + 20 edited)</summary>
-    <h3>Unchanged <span>· 10/10 on the stove</span></h3>
-    <div class="grid"><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_0.mp4" muted playsinline preload="metadata" controls></video><figcaption>#0 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_1.mp4" muted playsinline preload="metadata" controls></video><figcaption>#1 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_2.mp4" muted playsinline preload="metadata" controls></video><figcaption>#2 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_3.mp4" muted playsinline preload="metadata" controls></video><figcaption>#3 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_4.mp4" muted playsinline preload="metadata" controls></video><figcaption>#4 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_5.mp4" muted playsinline preload="metadata" controls></video><figcaption>#5 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_6.mp4" muted playsinline preload="metadata" controls></video><figcaption>#6 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_7.mp4" muted playsinline preload="metadata" controls></video><figcaption>#7 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_8.mp4" muted playsinline preload="metadata" controls></video><figcaption>#8 · bowl on the stove</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_unchanged_9.mp4" muted playsinline preload="metadata" controls></video><figcaption>#9 · bowl on the stove</figcaption></figure></div>
-    <h3>SAE edit <span>· 15/20 on the wooden cabinet (blue border)</span></h3>
-    <div class="grid"><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_0.mp4" muted playsinline preload="metadata" controls></video><figcaption>#0 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_swap_1.mp4" muted playsinline preload="metadata" controls></video><figcaption>#1 · bowl on the stove</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_2.mp4" muted playsinline preload="metadata" controls></video><figcaption>#2 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_3.mp4" muted playsinline preload="metadata" controls></video><figcaption>#3 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_4.mp4" muted playsinline preload="metadata" controls></video><figcaption>#4 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_5.mp4" muted playsinline preload="metadata" controls></video><figcaption>#5 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_6.mp4" muted playsinline preload="metadata" controls></video><figcaption>#6 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t none"><video src="rollouts_scene7_9/videos/s7_swap_7.mp4" muted playsinline preload="metadata" controls></video><figcaption>#7 · neither bowl placed</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_8.mp4" muted playsinline preload="metadata" controls></video><figcaption>#8 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_swap_9.mp4" muted playsinline preload="metadata" controls></video><figcaption>#9 · bowl on the stove</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_10.mp4" muted playsinline preload="metadata" controls></video><figcaption>#10 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_11.mp4" muted playsinline preload="metadata" controls></video><figcaption>#11 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_12.mp4" muted playsinline preload="metadata" controls></video><figcaption>#12 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_13.mp4" muted playsinline preload="metadata" controls></video><figcaption>#13 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_swap_14.mp4" muted playsinline preload="metadata" controls></video><figcaption>#14 · bowl on the stove</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_15.mp4" muted playsinline preload="metadata" controls></video><figcaption>#15 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_16.mp4" muted playsinline preload="metadata" controls></video><figcaption>#16 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_17.mp4" muted playsinline preload="metadata" controls></video><figcaption>#17 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s7_swap_18.mp4" muted playsinline preload="metadata" controls></video><figcaption>#18 · bowl on the stove</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s7_swap_19.mp4" muted playsinline preload="metadata" controls></video><figcaption>#19 · bowl on the wooden cabinet ✓</figcaption></figure></div>
-    <div class="bar"><button data-all>Play all in this scene</button><button data-stop>Pause all</button></div>
+  <p class="edit"><b>Layer 5, word-selected.</b> Swap top-16 “stove” SAE features for top-16 “cabinet” SAE features at the goal word.</p>
+  <details id="d7">
+    <summary>All rollouts <span>10 unchanged · 20 swapped</span></summary>
+    <div class="legend"><i class="chip other"></i>completes prompt B’s task <i class="chip own"></i>completes prompt A’s task <i class="chip none"></i>neither</div>
+    <h3>π<sub>0.5</sub>-LIBERO unchanged <span>· 10/10 on the stove</span></h3>
+    <div class="grid"><figure class="t own" id="s7base0"><video src="rollouts_scene7_9/videos/s7_unchanged_0.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#0 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base1"><video src="rollouts_scene7_9/videos/s7_unchanged_1.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#1 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base2"><video src="rollouts_scene7_9/videos/s7_unchanged_2.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#2 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base3"><video src="rollouts_scene7_9/videos/s7_unchanged_3.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#3 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base4"><video src="rollouts_scene7_9/videos/s7_unchanged_4.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#4 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base5"><video src="rollouts_scene7_9/videos/s7_unchanged_5.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#5 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base6"><video src="rollouts_scene7_9/videos/s7_unchanged_6.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#6 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base7"><video src="rollouts_scene7_9/videos/s7_unchanged_7.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#7 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base8"><video src="rollouts_scene7_9/videos/s7_unchanged_8.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#8 · bowl on the stove</figcaption></figure><figure class="t own" id="s7base9"><video src="rollouts_scene7_9/videos/s7_unchanged_9.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#9 · bowl on the stove</figcaption></figure></div>
+    <h3>SAE swap <span>· 15/20 on the wooden cabinet</span></h3>
+    <div class="grid"><figure class="t other" id="s7swap0"><video src="rollouts_scene7_9/videos/s7_swap_0.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#0 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own" id="s7swap1"><video src="rollouts_scene7_9/videos/s7_swap_1.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#1 · bowl on the stove</figcaption></figure><figure class="t other" id="s7swap2"><video src="rollouts_scene7_9/videos/s7_swap_2.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#2 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap3"><video src="rollouts_scene7_9/videos/s7_swap_3.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#3 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap4"><video src="rollouts_scene7_9/videos/s7_swap_4.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#4 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap5"><video src="rollouts_scene7_9/videos/s7_swap_5.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#5 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap6"><video src="rollouts_scene7_9/videos/s7_swap_6.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#6 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t none" id="s7swap7"><video src="rollouts_scene7_9/videos/s7_swap_7.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#7 · neither task completed</figcaption></figure><figure class="t other" id="s7swap8"><video src="rollouts_scene7_9/videos/s7_swap_8.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#8 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own" id="s7swap9"><video src="rollouts_scene7_9/videos/s7_swap_9.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#9 · bowl on the stove</figcaption></figure><figure class="t other" id="s7swap10"><video src="rollouts_scene7_9/videos/s7_swap_10.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#10 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap11"><video src="rollouts_scene7_9/videos/s7_swap_11.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#11 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap12"><video src="rollouts_scene7_9/videos/s7_swap_12.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#12 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap13"><video src="rollouts_scene7_9/videos/s7_swap_13.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#13 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own" id="s7swap14"><video src="rollouts_scene7_9/videos/s7_swap_14.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#14 · bowl on the stove</figcaption></figure><figure class="t other" id="s7swap15"><video src="rollouts_scene7_9/videos/s7_swap_15.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#15 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap16"><video src="rollouts_scene7_9/videos/s7_swap_16.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#16 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t other" id="s7swap17"><video src="rollouts_scene7_9/videos/s7_swap_17.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#17 · bowl on the wooden cabinet ✓</figcaption></figure><figure class="t own" id="s7swap18"><video src="rollouts_scene7_9/videos/s7_swap_18.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#18 · bowl on the stove</figcaption></figure><figure class="t other" id="s7swap19"><video src="rollouts_scene7_9/videos/s7_swap_19.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#19 · bowl on the wooden cabinet ✓</figcaption></figure></div>
+    <div class="bar"><button data-all>Play all</button><button data-stop>Pause all</button></div>
   </details>
+  <div class="striprow"><span class="muted">SAE swap, rollouts #0–#19</span><div class="strip" aria-label="Outcome of each rollout"><a class="chip other" href="#s7swap0" data-open title="#0 · bowl on the wooden cabinet"></a><a class="chip own" href="#s7swap1" data-open title="#1 · bowl on the stove"></a><a class="chip other" href="#s7swap2" data-open title="#2 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap3" data-open title="#3 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap4" data-open title="#4 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap5" data-open title="#5 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap6" data-open title="#6 · bowl on the wooden cabinet"></a><a class="chip none" href="#s7swap7" data-open title="#7 · neither task completed"></a><a class="chip other" href="#s7swap8" data-open title="#8 · bowl on the wooden cabinet"></a><a class="chip own" href="#s7swap9" data-open title="#9 · bowl on the stove"></a><a class="chip other" href="#s7swap10" data-open title="#10 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap11" data-open title="#11 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap12" data-open title="#12 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap13" data-open title="#13 · bowl on the wooden cabinet"></a><a class="chip own" href="#s7swap14" data-open title="#14 · bowl on the stove"></a><a class="chip other" href="#s7swap15" data-open title="#15 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap16" data-open title="#16 · bowl on the wooden cabinet"></a><a class="chip other" href="#s7swap17" data-open title="#17 · bowl on the wooden cabinet"></a><a class="chip own" href="#s7swap18" data-open title="#18 · bowl on the stove"></a><a class="chip other" href="#s7swap19" data-open title="#19 · bowl on the wooden cabinet"></a></div></div>
 </section>
 <section class="scene" id="scene9">
-  <h2>Scene 9</h2>
-  <p class="prompt">Instruction (never changed): “pick up the black bowl on the <b>wooden cabinet</b> and place it on the plate”</p>
+  <div class="head"><h2>Scene 9</h2><span class="setting">Layer 5, contrastive</span></div>
+  <p class="prompt">LIBERO-Spatial, scene 9: “pick up the black bowl on the <b>wooden cabinet</b> and place it on the plate”</p>
   <div class="pair" data-pair>
-    <figure class="hero"><video src="rollouts_scene7_9/videos/s9_unchanged_1.mp4" muted playsinline preload="auto"></video>
-      <figcaption><span class="tag">Unchanged</span>Follows its instruction: bowl on the wooden cabinet</figcaption></figure>
-    <figure class="hero swap"><video src="rollouts_scene7_9/videos/s9_swap_1.mp4" muted playsinline preload="auto"></video>
-      <figcaption><span class="tag">SAE edit</span>bowl on the stove instead</figcaption></figure>
+    <figure class="hero"><video src="rollouts_scene7_9/videos/s9_unchanged_1.mp4#t=0.1" muted loop playsinline preload="auto"></video>
+      <figcaption><span class="tag">π<sub>0.5</sub>-LIBERO unchanged</span>Picks up the bowl on the wooden cabinet</figcaption></figure>
+    <figure class="hero swap"><video src="rollouts_scene7_9/videos/s9_swap_1.mp4#t=0.1" muted loop playsinline preload="auto"></video>
+      <figcaption><span class="tag">SAE swap</span>Picks up the bowl on the stove instead</figcaption></figure>
   </div>
-  <div class="bar"><button class="play" data-play>▶ Play both</button><span class="muted">Same start state (#1) in both videos.</span></div>
+  <div class="bar"><button class="play" data-play>▶ Play both</button><span class="muted">Both runs see scene 9 and read the same instruction (#1).</span></div>
   <div class="stats">
-    <div><b>10/10</b><span>unchanged policy picks the wooden cabinet bowl</span></div>
-    <div class="hl"><b>18/20</b><span>with the edit, picks the stove bowl instead</span></div>
-    <div><b>control</b><span>16 random features: 0, 0, 0 of 20 (3 seeds)</span></div>
+    <div><b>10/10</b><span>rollouts: bowl on the wooden cabinet</span></div>
+    <div class="hl"><b>18/20</b><span>rollouts: bowl on the stove instead</span></div>
+    <div><b>control</b><span>16 random features: 0, 0, 0 of 20 (three random draws)</span></div>
   </div>
-  <p class="edit"><b>Edit:</b> Move 64 SAE features from “wooden cabinet” to “stove” levels (contrastive selection), applied at the landmark word after PaliGemma layer 5.</p>
-  <details>
-    <summary>Show all rollouts (10 unchanged + 20 edited)</summary>
-    <h3>Unchanged <span>· 10/10 on the wooden cabinet</span></h3>
-    <div class="grid"><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_0.mp4" muted playsinline preload="metadata" controls></video><figcaption>#0 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_1.mp4" muted playsinline preload="metadata" controls></video><figcaption>#1 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_2.mp4" muted playsinline preload="metadata" controls></video><figcaption>#2 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_3.mp4" muted playsinline preload="metadata" controls></video><figcaption>#3 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_4.mp4" muted playsinline preload="metadata" controls></video><figcaption>#4 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_5.mp4" muted playsinline preload="metadata" controls></video><figcaption>#5 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_6.mp4" muted playsinline preload="metadata" controls></video><figcaption>#6 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_7.mp4" muted playsinline preload="metadata" controls></video><figcaption>#7 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_8.mp4" muted playsinline preload="metadata" controls></video><figcaption>#8 · bowl on the wooden cabinet</figcaption></figure><figure class="t own"><video src="rollouts_scene7_9/videos/s9_unchanged_9.mp4" muted playsinline preload="metadata" controls></video><figcaption>#9 · bowl on the wooden cabinet</figcaption></figure></div>
-    <h3>SAE edit <span>· 18/20 on the stove (blue border)</span></h3>
-    <div class="grid"><figure class="t own"><video src="rollouts_scene7_9/videos/s9_swap_0.mp4" muted playsinline preload="metadata" controls></video><figcaption>#0 · bowl on the wooden cabinet</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_1.mp4" muted playsinline preload="metadata" controls></video><figcaption>#1 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_2.mp4" muted playsinline preload="metadata" controls></video><figcaption>#2 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_3.mp4" muted playsinline preload="metadata" controls></video><figcaption>#3 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_4.mp4" muted playsinline preload="metadata" controls></video><figcaption>#4 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_5.mp4" muted playsinline preload="metadata" controls></video><figcaption>#5 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_6.mp4" muted playsinline preload="metadata" controls></video><figcaption>#6 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_7.mp4" muted playsinline preload="metadata" controls></video><figcaption>#7 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_8.mp4" muted playsinline preload="metadata" controls></video><figcaption>#8 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_9.mp4" muted playsinline preload="metadata" controls></video><figcaption>#9 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_10.mp4" muted playsinline preload="metadata" controls></video><figcaption>#10 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_11.mp4" muted playsinline preload="metadata" controls></video><figcaption>#11 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_12.mp4" muted playsinline preload="metadata" controls></video><figcaption>#12 · bowl on the stove ✓</figcaption></figure><figure class="t none"><video src="rollouts_scene7_9/videos/s9_swap_13.mp4" muted playsinline preload="metadata" controls></video><figcaption>#13 · neither bowl placed</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_14.mp4" muted playsinline preload="metadata" controls></video><figcaption>#14 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_15.mp4" muted playsinline preload="metadata" controls></video><figcaption>#15 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_16.mp4" muted playsinline preload="metadata" controls></video><figcaption>#16 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_17.mp4" muted playsinline preload="metadata" controls></video><figcaption>#17 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_18.mp4" muted playsinline preload="metadata" controls></video><figcaption>#18 · bowl on the stove ✓</figcaption></figure><figure class="t other"><video src="rollouts_scene7_9/videos/s9_swap_19.mp4" muted playsinline preload="metadata" controls></video><figcaption>#19 · bowl on the stove ✓</figcaption></figure></div>
-    <div class="bar"><button data-all>Play all in this scene</button><button data-stop>Pause all</button></div>
+  <p class="edit"><b>Layer 5, contrastive.</b> The 64 latents whose codes at the goal word change most between prompts A and B, set to their mean under prompt B.</p>
+  <details id="d9">
+    <summary>All rollouts <span>10 unchanged · 20 swapped</span></summary>
+    <div class="legend"><i class="chip other"></i>completes prompt B’s task <i class="chip own"></i>completes prompt A’s task <i class="chip none"></i>neither</div>
+    <h3>π<sub>0.5</sub>-LIBERO unchanged <span>· 10/10 on the wooden cabinet</span></h3>
+    <div class="grid"><figure class="t own" id="s9base0"><video src="rollouts_scene7_9/videos/s9_unchanged_0.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#0 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base1"><video src="rollouts_scene7_9/videos/s9_unchanged_1.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#1 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base2"><video src="rollouts_scene7_9/videos/s9_unchanged_2.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#2 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base3"><video src="rollouts_scene7_9/videos/s9_unchanged_3.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#3 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base4"><video src="rollouts_scene7_9/videos/s9_unchanged_4.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#4 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base5"><video src="rollouts_scene7_9/videos/s9_unchanged_5.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#5 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base6"><video src="rollouts_scene7_9/videos/s9_unchanged_6.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#6 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base7"><video src="rollouts_scene7_9/videos/s9_unchanged_7.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#7 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base8"><video src="rollouts_scene7_9/videos/s9_unchanged_8.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#8 · bowl on the wooden cabinet</figcaption></figure><figure class="t own" id="s9base9"><video src="rollouts_scene7_9/videos/s9_unchanged_9.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#9 · bowl on the wooden cabinet</figcaption></figure></div>
+    <h3>SAE swap <span>· 18/20 on the stove</span></h3>
+    <div class="grid"><figure class="t own" id="s9swap0"><video src="rollouts_scene7_9/videos/s9_swap_0.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#0 · bowl on the wooden cabinet</figcaption></figure><figure class="t other" id="s9swap1"><video src="rollouts_scene7_9/videos/s9_swap_1.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#1 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap2"><video src="rollouts_scene7_9/videos/s9_swap_2.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#2 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap3"><video src="rollouts_scene7_9/videos/s9_swap_3.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#3 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap4"><video src="rollouts_scene7_9/videos/s9_swap_4.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#4 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap5"><video src="rollouts_scene7_9/videos/s9_swap_5.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#5 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap6"><video src="rollouts_scene7_9/videos/s9_swap_6.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#6 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap7"><video src="rollouts_scene7_9/videos/s9_swap_7.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#7 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap8"><video src="rollouts_scene7_9/videos/s9_swap_8.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#8 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap9"><video src="rollouts_scene7_9/videos/s9_swap_9.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#9 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap10"><video src="rollouts_scene7_9/videos/s9_swap_10.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#10 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap11"><video src="rollouts_scene7_9/videos/s9_swap_11.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#11 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap12"><video src="rollouts_scene7_9/videos/s9_swap_12.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#12 · bowl on the stove ✓</figcaption></figure><figure class="t none" id="s9swap13"><video src="rollouts_scene7_9/videos/s9_swap_13.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#13 · neither task completed</figcaption></figure><figure class="t other" id="s9swap14"><video src="rollouts_scene7_9/videos/s9_swap_14.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#14 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap15"><video src="rollouts_scene7_9/videos/s9_swap_15.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#15 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap16"><video src="rollouts_scene7_9/videos/s9_swap_16.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#16 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap17"><video src="rollouts_scene7_9/videos/s9_swap_17.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#17 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap18"><video src="rollouts_scene7_9/videos/s9_swap_18.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#18 · bowl on the stove ✓</figcaption></figure><figure class="t other" id="s9swap19"><video src="rollouts_scene7_9/videos/s9_swap_19.mp4#t=0.1" muted loop playsinline preload="metadata"></video><figcaption>#19 · bowl on the stove ✓</figcaption></figure></div>
+    <div class="bar"><button data-all>Play all</button><button data-stop>Pause all</button></div>
   </details>
+  <div class="striprow"><span class="muted">SAE swap, rollouts #0–#19</span><div class="strip" aria-label="Outcome of each rollout"><a class="chip own" href="#s9swap0" data-open title="#0 · bowl on the wooden cabinet"></a><a class="chip other" href="#s9swap1" data-open title="#1 · bowl on the stove"></a><a class="chip other" href="#s9swap2" data-open title="#2 · bowl on the stove"></a><a class="chip other" href="#s9swap3" data-open title="#3 · bowl on the stove"></a><a class="chip other" href="#s9swap4" data-open title="#4 · bowl on the stove"></a><a class="chip other" href="#s9swap5" data-open title="#5 · bowl on the stove"></a><a class="chip other" href="#s9swap6" data-open title="#6 · bowl on the stove"></a><a class="chip other" href="#s9swap7" data-open title="#7 · bowl on the stove"></a><a class="chip other" href="#s9swap8" data-open title="#8 · bowl on the stove"></a><a class="chip other" href="#s9swap9" data-open title="#9 · bowl on the stove"></a><a class="chip other" href="#s9swap10" data-open title="#10 · bowl on the stove"></a><a class="chip other" href="#s9swap11" data-open title="#11 · bowl on the stove"></a><a class="chip other" href="#s9swap12" data-open title="#12 · bowl on the stove"></a><a class="chip none" href="#s9swap13" data-open title="#13 · neither task completed"></a><a class="chip other" href="#s9swap14" data-open title="#14 · bowl on the stove"></a><a class="chip other" href="#s9swap15" data-open title="#15 · bowl on the stove"></a><a class="chip other" href="#s9swap16" data-open title="#16 · bowl on the stove"></a><a class="chip other" href="#s9swap17" data-open title="#17 · bowl on the stove"></a><a class="chip other" href="#s9swap18" data-open title="#18 · bowl on the stove"></a><a class="chip other" href="#s9swap19" data-open title="#19 · bowl on the stove"></a></div></div>
 </section>
+<section class="coming" id="more">
+  <h2>More rollouts and examples to come</h2>
+  <p class="muted">Results from the paper that will get their own rollouts here.</p>
+  <ul><li><b>Layer 0</b><span>BatchTopK feature swaps redirect behavior in up to 20/20 rollouts in a scene where random-feature swaps redirect none.</span></li><li><b>LIBERO-Object</b><span>Four scenes where the instructions differ only in the object to be placed in the basket: soup → dressing, cream cheese → soup, ketchup → BBQ sauce, butter → tomato sauce.</span></li><li><b>Difference vector</b><span>Adding a fixed difference-in-means vector at twice its natural magnitude redirects 8–10/10 rollouts.</span></li><li><b>Activation patching</b><span>Goal-word edits remain effective up to layer 6 for object location and layer 2 for object identity, and up to layer 13 when patching also covers camera tokens.</span></li><li><b>Matryoshka</b><span>Word-selected Matryoshka edits largely do not outperform random ones.</span></li><li><b>Single-feature ablation</b><span>Single goal-word features show little causal effect when ablated.</span></li></ul>
+</section>
+<footer>Submitted to the 10th Conference on Robot Learning (CoRL 2026).</footer>
 </main>
 <script>
 const wait = v => new Promise(r => v.readyState >= 2 ? r() : v.addEventListener("loadeddata", r, {once: true}));
@@ -126,5 +165,10 @@ document.querySelectorAll("details").forEach(d => {
   d.querySelector("[data-all]").onclick = () => vids().forEach(v => v.play().catch(() => {}));
   d.querySelector("[data-stop]").onclick = () => vids().forEach(v => v.pause());
 });
+document.querySelectorAll(".t video").forEach(v => v.onclick = () => v.paused ? v.play() : v.pause());
+document.querySelectorAll("[data-open]").forEach(a => a.addEventListener("click", e => {
+  const t = document.querySelector(a.getAttribute("href"));
+  t.closest("details").open = true;
+}));
 </script>
 </body></html>
